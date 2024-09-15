@@ -64,6 +64,60 @@ const App = () => {
     }
   };
 
+  async function downloadAll() {
+    const videoUrls = data.map(
+      (item) => `https://www.youtube.com/watch?v=${item.video_id}`
+    );
+    downloadAllAudio(videoUrls);
+  }
+
+  async function downloadAllAudio(videoUrls) {
+    try {
+      // Define the FastAPI endpoint for downloading all videos
+      const apiUrl = "http://localhost:8000/download_all/";
+
+      // Prepare the data for the POST request
+      const requestData = videoUrls.map((videoUrl) => ({ url: videoUrl }));
+
+      // Send a POST request to the FastAPI server
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      // Check if the response is okay
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      // Retrieve the ZIP file as a Blob
+      const blob = await response.blob();
+
+      // Set the filename for the ZIP file
+      const fileName = "audio_files.zip";
+
+      // Create a download link and trigger the download
+      const downloadUrl = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = fileName;
+
+      // Append the link to the body, click it, and remove it
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      // Revoke the object URL to free up memory
+      URL.revokeObjectURL(downloadUrl);
+      console.log(`Download started for ${fileName}`);
+    } catch (error) {
+      console.error("Download failed:", error);
+    }
+  }
+
   return (
     <div className="app">
       <input type="text" id="link" onChange={handleInputChange} />
@@ -77,6 +131,7 @@ const App = () => {
       >
         Submit
       </button>
+      <button onClick={downloadAll}>Download All</button>
       <div className="music-list">
         {data.map((item, index) => (
           <div key={index} className="music-item">
