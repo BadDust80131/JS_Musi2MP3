@@ -74,7 +74,7 @@ const App = () => {
   async function downloadAllAudio(videoUrls) {
     try {
       // Define the FastAPI endpoint for downloading all videos
-      const apiUrl = "http://localhost:8000/download_all/";
+      const apiUrl = "http://192.168.68.111:8000/download_all/";
 
       // Prepare the data for the POST request
       const requestData = videoUrls.map((videoUrl) => ({ url: videoUrl }));
