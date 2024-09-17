@@ -13,7 +13,7 @@ const App = () => {
   const downloadAudio = async (pLink) => {
     try {
       // Define the FastAPI endpoint
-      const apiUrl = "http://192.168.68.111:8000/download/";
+      const apiUrl = "http://172.29.222.39:8000/download/";
 
       // Send a POST request to the FastAPI server
       const response = await fetch(apiUrl, {
@@ -74,7 +74,7 @@ const App = () => {
   async function downloadAllAudio(videoUrls) {
     try {
       // Define the FastAPI endpoint for downloading all videos
-      const apiUrl = "http://192.168.68.111:8000/download_all/";
+      const apiUrl = "http://172.29.222.39:8000/download_all/";
 
       // Prepare the data for the POST request
       const requestData = videoUrls.map((videoUrl) => ({ url: videoUrl }));
@@ -163,7 +163,7 @@ async function fetchMusiData(link: string) {
   try {
     // Fetch Data from API
     const proxyUrl =
-      "http://192.168.68.111:8000/proxy?url=" + encodeURIComponent(link);
+      "http://172.29.222.39:8000/proxy?url=" + encodeURIComponent(link);
     const response = await fetch(proxyUrl);
     // Check if there is an error
     if (!response.ok) {
