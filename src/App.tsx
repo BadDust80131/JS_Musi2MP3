@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
+const IP = "172.233.148.151";
 
 const App = () => {
   const [link, setLink] = useState("");
@@ -13,7 +14,7 @@ const App = () => {
   const downloadAudio = async (pLink) => {
     try {
       // Define the FastAPI endpoint
-      const apiUrl = "http://172.29.222.39:8000/download/";
+      const apiUrl = "http://" + IP + ":8000/download/";
 
       // Send a POST request to the FastAPI server
       const response = await fetch(apiUrl, {
@@ -74,7 +75,7 @@ const App = () => {
   async function downloadAllAudio(videoUrls) {
     try {
       // Define the FastAPI endpoint for downloading all videos
-      const apiUrl = "http://172.29.222.39:8000/download_all/";
+      const apiUrl = "http://" + IP + ":8000/download_all/";
 
       // Prepare the data for the POST request
       const requestData = videoUrls.map((videoUrl) => ({ url: videoUrl }));
@@ -163,7 +164,7 @@ async function fetchMusiData(link: string) {
   try {
     // Fetch Data from API
     const proxyUrl =
-      "http://172.29.222.39:8000/proxy?url=" + encodeURIComponent(link);
+      "http://" + IP + ":8000/proxy?url=" + encodeURIComponent(link);
     const response = await fetch(proxyUrl);
     // Check if there is an error
     if (!response.ok) {
@@ -173,11 +174,6 @@ async function fetchMusiData(link: string) {
     const data = await response.json();
     const playlist = JSON.parse(data.success.data);
     return playlist.data;
-    console.log(
-      "https://img.youtube.com/vi/" +
-        playlist.data[0].video_id +
-        "/hqdefault.jpg"
-    );
   } catch (error) {
     console.error("Error: " + error);
   }
